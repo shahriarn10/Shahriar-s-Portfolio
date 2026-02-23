@@ -15,7 +15,7 @@ A modern, fully responsive personal portfolio website designed to showcase my ac
 * **Frontend Framework:** Vue 3
 * **Build Tool:** Vite
 * **Styling:** Tailwind CSS 
-* **Hosting/Deployment:** [Vercel / Netlify / GitHub Pages]
+* **Hosting/Deployment:** (It's under construction)
 
 ## 🚀 Local Setup and Installation
 To run this project locally on your machine, follow these steps:
