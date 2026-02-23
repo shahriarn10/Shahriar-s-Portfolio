@@ -3,7 +3,7 @@
 A modern, fully responsive personal portfolio website designed to showcase my academic projects, technical expertise, and journey as a Computer Science student.
 
 ## 🔗 Live Demo
-> **[Insert your live website link here, e.g., https://shahriarnajim.vercel.app]**
+> **https://shahriarnajim.vercel.app]** (It's under construction)
 
 ## ✨ Features
 * **Modern UI/UX:** Deep dark-themed, full-screen layout with smooth scrolling, dynamic navigation, and subtle hover animations.
