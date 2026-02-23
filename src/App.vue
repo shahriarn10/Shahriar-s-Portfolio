@@ -1,7 +1,6 @@
 <script setup>
 import Navbar from './components/Navbar.vue';
 import ProjectCard from './components/ProjectCard.vue';
-// Combined all imports for cleaner structure (Code Quality Mark)
 import { profile, projects, skills, certifications, contact } from './data/portfolio.js';
 import { ref, onMounted, onUnmounted } from 'vue';
 
@@ -11,7 +10,13 @@ const handleScroll = () => {
   showButton.value = window.scrollY > 500;
 };
 
-onMounted(() => window.addEventListener('scroll', handleScroll));
+onMounted(() => {
+  window.addEventListener('scroll', handleScroll);
+  if (window.location.hash) {
+    window.history.replaceState(null, null, window.location.pathname);
+  }
+  window.scrollTo(0, 0);
+});
 onUnmounted(() => window.removeEventListener('scroll', handleScroll));
 
 const scrollToTop = () => {
@@ -28,13 +33,14 @@ const scrollToTop = () => {
         {{ profile.batch }} Student
       </div>
       <h1 class="text-5xl md:text-7xl font-extrabold mb-6 tracking-tight">
-        Hi, I'm <span class="text-transparent bg-clip-text bg-linear-to-r from-blue-400 to-cyan-300">
-          {{ profile.name }}
-        </span>
-        <p class="text-lg md:text-xl text-gray-400 max-w-2xl leading-relaxed mt-6 mb-10">
+  Hi, I'm <span class="text-transparent bg-clip-text bg-linear-to-r from-blue-400 to-cyan-300">
+    {{ profile.name }}
+  </span>
+</h1>
+
+<p class="text-lg md:text-xl text-gray-400 max-w-2xl leading-relaxed mt-6 mb-10">
   Final-year CS student at Metropolitan University. Blending competitive programming logic with modern web development and Artificial Intelligence.
 </p>
-      </h1>
       <p class="text-lg md:text-xl text-gray-400 max-w-2xl leading-relaxed">
         {{ profile.about }}
       </p>
