@@ -1,5 +1,25 @@
-# Vue 3 + Vite
+# Shahriar Najim - Developer Portfolio 🚀
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+A modern, fully responsive personal portfolio website designed to showcase my academic projects, technical expertise, and journey as a Computer Science student.
 
-Learn more about IDE Support for Vue in the [Vue Docs Scaling up Guide](https://vuejs.org/guide/scaling-up/tooling.html#ide-support).
+## 🔗 Live Demo
+> **[Insert your live website link here, e.g., https://shahriarnajim.vercel.app]**
+
+## ✨ Features
+* **Modern UI/UX:** Deep dark-themed, full-screen layout with smooth scrolling, dynamic navigation, and subtle hover animations.
+* **Fully Responsive:** Mobile-first approach ensuring a seamless viewing experience across desktops, tablets, and smartphones.
+* **Dynamic Architecture:** Utilizes a centralized data configuration (`src/data/portfolio.js`) making it instantly scalable to add new projects, skills, or certifications.
+* **Tailored Showcases:** Dedicated sections highlighting my core focuses: AI/ML (Fake News Detection Thesis), System-Level Programming (OS Schedulers), and Full-Stack Web Development.
+
+## 🛠️ Tech Stack
+* **Frontend Framework:** Vue 3
+* **Build Tool:** Vite
+* **Styling:** Tailwind CSS 
+* **Hosting/Deployment:** [Vercel / Netlify / GitHub Pages]
+
+## 🚀 Local Setup and Installation
+To run this project locally on your machine, follow these steps:
+
+1. **Clone the repository:**
+   ```bash
+   git clone [https://github.com/shahriarn10/Shahriar-s-Portfolio.git](https://github.com/shahriarn10/Shahriar-s-Portfolio.git)
