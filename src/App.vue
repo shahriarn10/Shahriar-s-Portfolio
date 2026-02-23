@@ -54,6 +54,8 @@ const scrollToTop = () => {
       </div>
     </header>
 
+<!-- About Me section -->
+
     <section id="about-me" class="w-full max-w-350 mx-auto pt-12 pb-24 px-6 md:px-12">
   <div class="flex items-start gap-4 mb-16">
     <div class="w-1.5 h-10 bg-blue-600 rounded-full mt-1 shrink-0"></div>
@@ -97,6 +99,8 @@ const scrollToTop = () => {
   </div>
 </section>
 
+<!-- Skills section -->
+
     <section id="skills" class="w-full max-w-7xl mx-auto py-24 px-6 md:px-12">
       <h2 class="text-3xl font-bold mb-12 text-center">Technical Expertise</h2>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -114,6 +118,8 @@ const scrollToTop = () => {
         </div>
       </div>
     </section>
+
+<!-- Project section -->
 
     <section id="projects" class="w-full max-w-7xl mx-auto py-24 px-6 md:px-12">
   <div class="flex items-center gap-4 mb-10">
@@ -151,6 +157,8 @@ const scrollToTop = () => {
   </div>
 </section>
 
+<!-- Certificate section -->
+
     <section id="certifications" class="w-full max-w-7xl mx-auto py-24 px-6 md:px-12">
   <div class="flex items-center gap-4 mb-10">
     <div class="h-8 w-1 bg-blue-500"></div>
@@ -184,6 +192,9 @@ const scrollToTop = () => {
     </div>
   </div>
 </section>
+
+  <!-- Contact section -->
+
     <section id="contact" class="w-full max-w-7xl mx-auto py-24 px-6 md:px-12">
   <div class="max-w-3xl mx-auto bg-linear-to-b from-gray-900 to-gray-950 p-12 rounded-3xl border border-gray-800 shadow-2xl">
     <h2 class="text-3xl font-bold mb-4">Let's Connect</h2>
