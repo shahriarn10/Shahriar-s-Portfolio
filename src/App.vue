@@ -31,6 +31,9 @@ const scrollToTop = () => {
         Hi, I'm <span class="text-transparent bg-clip-text bg-linear-to-r from-blue-400 to-cyan-300">
           {{ profile.name }}
         </span>
+        <p class="text-lg md:text-xl text-gray-400 max-w-2xl leading-relaxed mt-6 mb-10">
+  Final-year CS student at Metropolitan University. Blending competitive programming logic with modern web development and Artificial Intelligence.
+</p>
       </h1>
       <p class="text-lg md:text-xl text-gray-400 max-w-2xl leading-relaxed">
         {{ profile.about }}
