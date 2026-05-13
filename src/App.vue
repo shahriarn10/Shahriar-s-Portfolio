@@ -1,236 +1,182 @@
 <script setup>
-import Navbar from './components/Navbar.vue';
-import ProjectCard from './components/ProjectCard.vue';
-import { profile, projects, skills, certifications, contact } from './data/portfolio.js';
 import { ref, onMounted, onUnmounted } from 'vue';
+import Navbar from './components/Navbar.vue';
+import HeroSection from './components/HeroSection.vue';
+import SkillsSection from './components/SkillsSection.vue';
+import ProjectsSection from './components/ProjectsSection.vue';
+import TimelineSection from './components/TimelineSection.vue';
+import CertificationsSection from './components/CertificationsSection.vue';
+import ContactSection from './components/ContactSection.vue';
+import { profile, projects, skills, certifications, contact, stats, timeline } from './data/portfolio.js';
 
+// Scroll-to-top
 const showButton = ref(false);
+const handleScroll = () => { showButton.value = window.scrollY > 500; };
 
-const handleScroll = () => {
-  showButton.value = window.scrollY > 500;
+// Scroll reveal
+let revealObserver = null;
+const initReveal = () => {
+  revealObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.1, rootMargin: '0px 0px -60px 0px' }
+  );
+  document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => revealObserver.observe(el));
 };
 
 onMounted(() => {
-  window.addEventListener('scroll', handleScroll);
-  if (window.location.hash) {
-    window.history.replaceState(null, null, window.location.pathname);
-  }
+  window.addEventListener('scroll', handleScroll, { passive: true });
   window.scrollTo(0, 0);
+  // Delay reveal init so elements are rendered
+  setTimeout(initReveal, 100);
 });
-onUnmounted(() => window.removeEventListener('scroll', handleScroll));
+onUnmounted(() => {
+  window.removeEventListener('scroll', handleScroll);
+  revealObserver?.disconnect();
+});
 
-const scrollToTop = () => {
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-};
+const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 </script>
 
 <template>
-  <div class="min-h-screen bg-[#050810] text-gray-100 selection:bg-blue-500/30 scroll-smooth w-full overflow-x-hidden">
+  <div class="min-h-screen bg-[#050810] text-gray-100 w-full overflow-x-hidden relative">
+
+    <!-- Global radial glow backdrop -->
+    <div class="fixed inset-0 pointer-events-none z-0">
+      <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-blue-600/5 rounded-full blur-[120px]"></div>
+    </div>
+
     <Navbar />
 
-    <header id="about" class="w-full max-w-350 mx-auto pt-40 pb-16 px-6 flex flex-col items-center justify-center text-center">
-      <div class="inline-block px-3 py-1 mb-6 text-sm font-medium text-blue-400 bg-blue-500/10 rounded-full border border-blue-500/20">
-        {{ profile.batch }} Student
-      </div>
-      <h1 class="text-5xl md:text-7xl font-extrabold mb-6 tracking-tight">
-  Hi, I'm <span class="text-transparent bg-clip-text bg-linear-to-r from-blue-400 to-cyan-300">
-    {{ profile.name }}
-  </span>
-</h1>
+    <!-- ── Hero ─────────────────────────────────────── -->
+    <section id="about" class="relative z-10">
+      <HeroSection :roles="profile.roles" />
+    </section>
 
-<p class="text-lg md:text-xl text-gray-400 max-w-2xl leading-relaxed mt-6 mb-10">
-  Final-year CS student at Metropolitan University. Blending competitive programming logic with modern web development and Artificial Intelligence.
-</p>
-      <p class="text-lg md:text-xl text-gray-400 max-w-2xl leading-relaxed">
-        {{ profile.about }}
-      </p>
-      <div class="mt-10 flex gap-4">
-        <a href="#projects" class="border border-gray-700 hover:bg-gray-800 px-8 py-3 rounded-full font-bold transition-all">
-          View Projects
-        </a>
-        <a href="#contact" class="border border-gray-700 hover:bg-gray-800 px-8 py-3 rounded-full font-bold transition-all">
-          Contact Me
-        </a>
-      </div>
-    </header>
-
-<!-- About Me section -->
-
-    <section id="about-me" class="w-full max-w-350 mx-auto pt-12 pb-24 px-6 md:px-12">
-  <div class="flex items-start gap-4 mb-16">
-    <div class="w-1.5 h-10 bg-blue-600 rounded-full mt-1 shrink-0"></div>
-    <div class="flex flex-col">
-      <h2 class="text-4xl md:text-5xl font-bold text-white tracking-tight leading-none">
-        About Me
-      </h2>
-    </div>
-  </div>
-
-  <div class="flex flex-col lg:flex-row items-center gap-16">
-    <div class="w-full lg:w-1/3 flex justify-center">
-      <div class="relative group">
-        <div class="absolute -inset-2 bg-linear-to-r from-blue-600 to-cyan-400 rounded-2xl blur-lg opacity-30 group-hover:opacity-60 transition duration-500"></div>
-        
-        <img :src="profile.image" alt="Shahriar Najim" 
-             class="relative rounded-2xl object-cover w-64 h-64 md:w-80 md:h-80 border border-gray-800 shadow-2xl z-10" />
-      </div>
-    </div>
-
-    <div class="w-full lg:w-2/3 flex flex-col gap-6 text-gray-400 text-lg leading-relaxed">
-      <p>
-        {{ profile.aboutParagraph1 }}
-      </p>
-      <p>
-        {{ profile.aboutParagraph2 }}
-      </p>
-      
-      <div class="mt-4">
-  <a href="/cv.pdf" 
-     download="Shahriar_Najim_Resume.pdf" 
-     target="_blank" 
-     class="inline-flex items-center gap-3 px-6 py-3 bg-gray-900 border border-gray-700 hover:border-blue-500 hover:text-blue-400 text-white rounded-xl font-semibold transition-all duration-300 w-fit shadow-lg hover:shadow-blue-500/20">
-    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
-    </svg>
-    Download Resume
-  </a>
-</div>
-    </div>
-  </div>
-</section>
-
-<!-- Skills section -->
-
-    <section id="skills" class="w-full max-w-7xl mx-auto py-24 px-6 md:px-12">
-      <h2 class="text-3xl font-bold mb-12 text-center">Technical Expertise</h2>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div v-for="skillGroup in skills" :key="skillGroup.category" 
-             class="p-8 bg-gray-900/50 rounded-2xl border border-gray-800 hover:border-blue-500/40 transition-all hover:-translate-y-1">
-          <h3 class="text-blue-400 font-bold mb-6 uppercase tracking-widest text-xs">
-            {{ skillGroup.category }}
-          </h3>
-          <div class="flex flex-wrap gap-3">
-            <span v-for="skill in skillGroup.items" :key="skill" 
-                  class="bg-gray-800/80 px-4 py-2 rounded-lg border border-gray-700 text-sm hover:border-blue-500/50 transition-colors">
-              {{ skill }}
-            </span>
-          </div>
+    <!-- ── Stats bar ──────────────────────────────────── -->
+    <section class="relative z-10 w-full max-w-5xl mx-auto px-6 md:px-12 py-6">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div v-for="(stat, i) in stats" :key="stat.label"
+             :class="`reveal reveal-delay-${i+1} gradient-border p-6 text-center hover:-translate-y-1 transition-all duration-300`">
+          <div class="text-3xl md:text-4xl font-black gradient-text mb-1">{{ stat.value }}</div>
+          <div class="text-xs text-gray-500 uppercase tracking-wider font-medium">{{ stat.label }}</div>
         </div>
       </div>
     </section>
 
-<!-- Project section -->
+    <!-- ── About Me ─────────────────────────────────── -->
+    <section id="about-me" class="relative z-10 w-full max-w-7xl mx-auto py-32 px-6 md:px-12">
+      <div class="text-center mb-20 reveal">
+        <div class="section-tag mx-auto w-fit">👋 Who Am I</div>
+        <h2 class="text-4xl md:text-5xl font-black text-white mt-4 mb-4">About Me</h2>
+      </div>
 
-    <section id="projects" class="w-full max-w-7xl mx-auto py-24 px-6 md:px-12">
-  <div class="flex items-center gap-4 mb-10">
-    <div class="h-8 w-1 bg-blue-500"></div>
-    <div>
-      <h2 class="text-3xl font-bold">Featured Projects</h2>
-      
-    </div>
-  </div>
+      <div class="flex flex-col lg:flex-row items-center gap-16">
+        <!-- Photo -->
+        <div class="w-full lg:w-1/3 flex justify-center reveal reveal-left">
+          <div class="relative group">
+            <div class="absolute -inset-4 bg-gradient-to-r from-blue-600 to-cyan-400 rounded-3xl blur-xl opacity-20 group-hover:opacity-40 transition duration-700"></div>
+            <div class="relative float-anim">
+              <img :src="profile.image" alt="Shahriar Najim"
+                   class="relative rounded-2xl object-cover w-64 h-64 md:w-80 md:h-80 border border-white/[0.08] shadow-2xl z-10 glow-blue" />
+              <!-- Online indicator -->
+              <div class="absolute -bottom-3 -right-3 z-20 flex items-center gap-2 bg-gray-900 border border-gray-700 rounded-full px-3 py-1.5 shadow-lg">
+                <span class="w-2.5 h-2.5 bg-green-400 rounded-full animate-pulse"></span>
+                <span class="text-xs font-semibold text-gray-300">Available</span>
+              </div>
+            </div>
+          </div>
+        </div>
 
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-    <div v-for="p in projects" :key="p.id" 
-         class="group p-6 bg-gray-900/50 rounded-2xl border border-gray-800 hover:border-blue-500/50 transition-all duration-300 flex flex-col h-full">
-      
-      <div class="flex justify-between items-start mb-4">
-        <div class="px-2 py-1 rounded text-[10px] font-bold uppercase tracking-tighter bg-blue-500/10 text-blue-400 border border-blue-500/20">
-          {{ p.id === 3 ? 'Thesis' : 'Academic Project' }}
+        <!-- Text -->
+        <div class="w-full lg:w-2/3 reveal reveal-right">
+          <div class="space-y-5 text-gray-400 text-lg leading-relaxed mb-8">
+            <p>{{ profile.aboutParagraph1 }}</p>
+            <p>{{ profile.aboutParagraph2 }}</p>
+          </div>
+
+          <!-- Tags -->
+          <div class="flex flex-wrap gap-2 mb-8">
+            <span v-for="role in profile.roles" :key="role"
+                  class="px-3 py-1.5 text-sm font-medium text-blue-400 bg-blue-500/10 border border-blue-500/20 rounded-lg">
+              {{ role }}
+            </span>
+          </div>
+
+          <!-- Resume button -->
+          <a href="/cv.pdf" download="Shahriar_Najim_Resume.pdf" target="_blank"
+             class="group inline-flex items-center gap-3 px-7 py-4 bg-gray-900 border border-gray-700 hover:border-blue-500/60 hover:text-blue-400 text-white rounded-xl font-semibold transition-all duration-300 shadow-lg hover:shadow-blue-500/20 hover:-translate-y-0.5">
+            <svg class="w-5 h-5 group-hover:translate-y-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+            </svg>
+            Download Resume
+          </a>
         </div>
       </div>
+    </section>
 
-      <h3 class="text-lg font-bold mb-2 group-hover:text-blue-400 transition-colors leading-tight">
-        {{ p.title }}
-      </h3>
-      <p class="text-gray-400 text-sm mb-6 grow">
-        {{ p.desc }}
-      </p>
+    <!-- ── Skills ───────────────────────────────────── -->
+    <div class="relative z-10">
+      <SkillsSection :skills="skills" />
+    </div>
 
-      <div class="flex flex-wrap gap-2 mt-auto">
-        <span v-for="tag in p.tech" :key="tag" 
-              class="bg-gray-800/80 px-2 py-1 rounded border border-gray-700 text-[10px] text-gray-300">
-          {{ tag }}
-        </span>
+    <!-- ── Projects ─────────────────────────────────── -->
+    <div class="relative z-10">
+      <ProjectsSection :projects="projects" />
+    </div>
+
+    <!-- ── Timeline ─────────────────────────────────── -->
+    <div class="relative z-10">
+      <TimelineSection :timeline="timeline" />
+    </div>
+
+    <!-- ── Certifications ────────────────────────────── -->
+    <div class="relative z-10">
+      <CertificationsSection :certifications="certifications" />
+    </div>
+
+    <!-- ── Contact ───────────────────────────────────── -->
+    <div class="relative z-10">
+      <ContactSection :contact="contact" :profile="profile" />
+    </div>
+
+    <!-- ── Footer ────────────────────────────────────── -->
+    <footer class="relative z-10 border-t border-white/[0.06] py-10 px-6 text-center">
+      <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+        <p class="text-gray-500 text-sm">
+          © 2026 <span class="text-white font-semibold">{{ profile.name }}</span>. All rights reserved.
+        </p>
+        <p class="text-gray-600 text-xs flex items-center gap-2">
+          <span>Built with</span>
+          <span class="text-green-400">Vue 3</span>
+          <span>+</span>
+          <span class="text-blue-400">Tailwind CSS</span>
+          <span>+</span>
+          <span class="text-purple-400">Vite</span>
+        </p>
       </div>
-    </div>
-  </div>
-</section>
-
-<!-- Certificate section -->
-
-    <section id="certifications" class="w-full max-w-7xl mx-auto py-24 px-6 md:px-12">
-  <div class="flex items-center gap-4 mb-10">
-    <div class="h-8 w-1 bg-blue-500"></div>
-    <h2 class="text-3xl font-bold">Licenses & Certifications</h2>
-  </div>
-
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-    <div v-for="cert in certifications" :key="cert.title" 
-         class="group p-6 bg-gray-900/50 rounded-2xl border border-gray-800 hover:border-blue-500/50 transition-all duration-300 flex flex-col h-full">
-      
-      <div class="flex justify-between items-start mb-4">
-        <div class="px-2 py-1 rounded text-[10px] font-bold uppercase tracking-tighter bg-blue-500/10 text-blue-400 border border-blue-500/20">
-          {{ cert.issuer }}
-        </div>
-        <span class="text-xs text-gray-500">{{ cert.date }}</span>
-      </div>
-
-      <h3 class="text-lg font-bold mb-2 group-hover:text-blue-400 transition-colors leading-tight">
-        {{ cert.title }}
-      </h3>
-      
-      <p class="text-gray-400 text-sm mb-6 grow">
-        {{ cert.description }}
-      </p>
-
-      <a :href="cert.link" target="_blank" 
-         class="inline-flex items-center gap-2 text-xs font-bold text-blue-500 hover:text-blue-300 transition-colors">
-        Show Credential 
-        <span class="text-[10px]">↗</span>
-      </a>
-    </div>
-  </div>
-</section>
-
-  <!-- Contact section -->
-
-    <section id="contact" class="w-full max-w-7xl mx-auto py-24 px-6 md:px-12">
-  <div class="max-w-3xl mx-auto bg-linear-to-b from-gray-900 to-gray-950 p-12 rounded-3xl border border-gray-800 shadow-2xl">
-    <h2 class="text-3xl font-bold mb-4">Let's Connect</h2>
-    <p class="text-gray-400 mb-8 max-w-lg mx-auto">
-      I'm currently focusing on my thesis in **Fake News Detection** and exploring opportunities in AI/ML and Systems. Let's build something together!
-    </p>
-    
-    <div class="flex flex-wrap justify-center gap-4">
-      <a :href="'mailto:' + contact.email" 
-         class="flex items-center gap-2 bg-[#b6cdda] hover:bg-[#EA4335] text-white px-6 py-3 rounded-xl font-bold transition-all transform hover:scale-105">
-        <span>✉️</span> Email Me
-      </a>
-      
-      <a :href="contact.github" target="_blank"
-         class="flex items-center gap-2 bg-[#b6cdda] hover:bg-[#000000] text-white px-6 py-3 rounded-xl font-bold transition-all transform hover:scale-105 border border-gray-700">
-        <span>📂</span> GitHub
-      </a>
-      
-      <a :href="contact.linkedin" target="_blank"
-         class="flex items-center gap-2 bg-[#b6cdda] hover:bg-[#0072B1] text-white px-6 py-3 rounded-xl font-bold transition-all transform hover:scale-105">
-        <span>🔗</span> LinkedIn
-      </a>
-    </div>
-    
-    <p class="mt-8 text-sm text-gray-500">Based in {{ contact.location }}</p>
-  </div>
-</section>
-
-    <footer class="container mx-auto py-12 px-6 border-t border-gray-900 text-center">
-      <p class="text-gray-500 text-sm italic">
-        © 2026 {{ profile.name }} • Built with Vue 3 & Tailwind CSS
-      </p>
     </footer>
+
+    <!-- Scroll to top -->
+    <Transition name="bounce-up">
+      <button v-show="showButton" @click="scrollToTop"
+              class="fixed bottom-8 right-8 w-12 h-12 bg-blue-600 hover:bg-blue-500 rounded-xl shadow-xl hover:shadow-blue-500/40 transition-all duration-300 hover:-translate-y-1 flex items-center justify-center z-50">
+        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/>
+        </svg>
+      </button>
+    </Transition>
   </div>
-  <button v-show="showButton" @click="scrollToTop" 
-        class="fixed bottom-8 right-8 bg-blue-600 p-3 rounded-full shadow-lg hover:bg-blue-500 transition-all z-50">
-  ↑
-</button>
 </template>
+
+<style scoped>
+.bounce-up-enter-active { transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.bounce-up-leave-active { transition: all 0.2s ease; }
+.bounce-up-enter-from, .bounce-up-leave-to { opacity: 0; transform: translateY(20px) scale(0.85); }
+</style>
